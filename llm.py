@@ -34,22 +34,28 @@ def prompt_adendum(topic):
 
 # The streamlit code starts here. Use the button to generate response
 if st.button('Generate'):
-    if len(user_input) == 0:
-        response = [{'generated_text':"You haven't given any topic to write on"}]
-    else:
-        response = query(
-            {
-                "inputs": prompt_adendum(user_input),
-                "parameters": {"max_new_tokens": int(user_token_input)}
-            }
-        )
 
-    # save the response from the model in a variable called result
+    try:
+
+        if len(user_input) == 0:
+            response = [{'generated_text':"You haven't given any topic to write on"}]
+        else:
+            response = query(
+                {
+                    "inputs": prompt_adendum(user_input),
+                    "parameters": {"max_new_tokens": int(user_token_input)}
+                }
+            )
+
+        # save the response from the model in a variable called result
 
 
 
-    result = response[0]['generated_text']
-    result = result.split('[RESPONSE]')[1]
+        result = response[0]['generated_text']
+        result = result.split('[RESPONSE]')[1]
 
-    st.write(result)
+        st.write(result)
+
+    except Exception as e:
+        st.write('Try to switch on the huggingface inference endpoint')
 
